@@ -10,16 +10,18 @@ const publisher = {
   subscribe: function (listener) {
     this.history.forEach((message) => listener(message));
     this.listeners.push(listener);
+    return () => {
+      this.listeners = this.listeners.filter(
+        (_listener) => listener != _listener
+      );
+    };
   },
 };
 
-const unsubscribe = function () {
-  publisher.listeners.shift();
-};
-
-publisher.subscribe((message) => {
+const unsubscribe = publisher.subscribe((message) => {
   console.log(`early listener: ${message}`);
 });
+
 publisher.dispatch("hey now!!");
 publisher.dispatch("hello newman");
 publisher.subscribe((message) => {
