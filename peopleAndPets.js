@@ -1,21 +1,21 @@
 // Code stretch 3/9/2021
 function peopleAndPets() {
-  let peopleObj = people.reduce((acc, p) => {
+  const peopleObj = people.reduce((acc, p) => {
     acc[p.id] = { id: p.id, name: p.name, pets: [] };
     return acc;
   }, {});
-  let petsObj = pets.reduce((acc, p) => {
+  const petsObj = pets.reduce((acc, p) => {
     acc[p.id] = { id: p.id, name: p.name };
     return acc;
   }, {});
-  let pet;
   for (let i = 0; i < ownerships.length; i++) {
-    pet = petsObj[ownerships[i].petId];
-    peopleObj[ownerships[i].personId].pets.push(
-      JSON.parse(JSON.stringify(pet))
-    );
+    peopleObj[ownerships[i].personId].pets.push(petsObj[ownerships[i].petId]);
   }
-  return peopleObj;
+  let rslt = [];
+  for (const pId in peopleObj) {
+    rslt.push(peopleObj[pId]);
+  }
+  return rslt;
 }
 
 const pets = [
@@ -37,7 +37,7 @@ const ownerships = [
   { personId: 3, petId: 3 },
 ];
 
-console.log(peopleAndPets());
+console.log(JSON.stringify(peopleAndPets()));
 /*
   [
     {
